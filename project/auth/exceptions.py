@@ -11,3 +11,13 @@ class UserNotValidatedException(ApplicationException):
 @dataclass
 class EmailAlreadyExistException(ApplicationException):
     code_status: int = 409
+
+
+@dataclass
+class UserDoesNotExistException(ApplicationException):
+    code_status: int = 404
+
+
+@dataclass
+class TokenNotValidatedException(ApplicationException):
+    code_status: int = 401

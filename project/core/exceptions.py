@@ -1,8 +1,7 @@
 from dataclasses import dataclass
-from typing import Any
 
 
 @dataclass
 class ApplicationException(Exception):
-    body: dict | Any
+    body: dict
     code_status: int
