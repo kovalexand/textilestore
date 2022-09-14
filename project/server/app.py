@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Response, Request
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 
 from project.core.database import Base, engine
 from project.core.exceptions import ApplicationException
@@ -14,5 +15,5 @@ app.include_router(auth)
 
 # init fastAPI`s exceptions
 @app.exception_handler(ApplicationException)
-def app_exception_handler(request: Request, exc: ApplicationException) -> Response:
-    return Response(status_code=exc.code_status, content=str(exc.body).encode())
+async def app_exception_handler(request: Request, exc: ApplicationException) -> JSONResponse:
+    return JSONResponse(status_code=exc.code_status, content=exc.body)
