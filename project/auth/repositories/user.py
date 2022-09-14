@@ -13,6 +13,13 @@ class IUserRepository(ABC):
         :return:
         """
 
+    @abstractmethod
+    async def get_user(self, email: str) -> User | None:
+        """
+        :param email:
+        :return:
+        """
+
 
 class UserRepository(IUserRepository):
     def __init__(self, db: sessionmaker):
@@ -26,4 +33,9 @@ class UserRepository(IUserRepository):
                 session.commit()
             except IntegrityError:
                 raise EmailAlreadyExistException(body=exc_body)
+        return user
+
+    async def get_user(self, email: str) -> User | None:
+        with self.db() as session:
+            user = session.query(User).filter_by(email=email).first()
         return user
