@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 
 from project.auth.exceptions import UserDoesNotExistException
 from project.auth.models.dto.login import LoginRequest, LoginResponse
+from project.auth.models.dto.refresh import RefreshRequest, RefreshResponse
 from project.auth.models.entities import User
 from project.auth.models.dto.registration import RegistrationRequest, RegistrationResponse
 from project.auth.repositories.user import IUserRepository
@@ -20,6 +21,13 @@ class IAuthUseCase(ABC):
 
     @abstractmethod
     async def login(self, request: LoginRequest) -> LoginResponse:
+        """
+        :param request:
+        :return:
+        """
+
+    @abstractmethod
+    async def refresh(self, request: RefreshRequest) -> RefreshResponse:
         """
         :param request:
         :return:
@@ -53,3 +61,7 @@ class AuthUseCase(IAuthUseCase):
             raise UserDoesNotExistException(body=exp_body)
         token = await self.token_service.create_new_token(user_id=str(user.id))
         return LoginResponse(name=str(user.name), token=token)
+
+    async def refresh(self, request: RefreshRequest) -> RefreshResponse:
+        token = await self.token_service.refresh_token(request.token)
+        return RefreshResponse(token=token)
