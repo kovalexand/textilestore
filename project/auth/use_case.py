@@ -52,4 +52,4 @@ class AuthUseCase(IAuthUseCase):
             exp_body = {'detail': 'email or password uncorrected'}
             raise UserDoesNotExistException(body=exp_body)
         token = await self.token_service.create_new_token(user_id=str(user.id))
-        return LoginResponse(name=str(user.name), access_token=token.access_token, refresh_token=token.refresh_token)
+        return LoginResponse(name=str(user.name), token=token)

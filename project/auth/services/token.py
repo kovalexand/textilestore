@@ -77,13 +77,13 @@ class TokenService(ITokenService):
         payload = {'id': user_id}
         access_token = await self.create_access_token(payload)
         refresh_token = await self.create_refresh_token(payload, access_token)
-        token = Token(access_token=access_token, refresh_token=refresh_token)
+        token = Token(access=access_token, refresh=refresh_token)
         return token
 
     async def refresh_token(self, token: Token) -> Token:
         try:
             payload = jwt.decode(
-                token.refresh_token, self.refresh_secret_key, self.algorythm, access_token=token.access_token
+                token.refresh, self.refresh_secret_key, self.algorythm, access_token=token.access
             )
             token = await self.create_new_token(payload['id'])
         except JWTError or ExpiredSignatureError or JWTClaimsError or KeyError:
@@ -94,7 +94,7 @@ class TokenService(ITokenService):
     async def authentication(self, token: Token) -> UUID:
         try:
             payload = jwt.decode(
-                token.access_token, self.access_secret_key, self.algorythm
+                token.access, self.access_secret_key, self.algorythm
             )
             user_id = payload['id']
         except JWTError or ExpiredSignatureError or JWTClaimsError or KeyError:

@@ -2,6 +2,8 @@ from dataclasses import dataclass
 
 from pydantic import BaseModel, Field, EmailStr
 
+from project.auth.models.dto.token import Token
+
 
 class LoginRequest(BaseModel):
     email: EmailStr
@@ -11,5 +13,4 @@ class LoginRequest(BaseModel):
 @dataclass
 class LoginResponse:
     name: str
-    access_token: str
-    refresh_token: str
+    token: Token
