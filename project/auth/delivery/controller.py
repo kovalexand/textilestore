@@ -6,19 +6,19 @@ from project.auth.use_case import IAuthUseCase
 from project.auth.dependencies import get_auth_depend
 from project.auth.models.dto.registration import RegistrationRequest, RegistrationResponse
 
-auth = APIRouter()
+auth = APIRouter(prefix="/api/auth")
 
 
-@auth.post(path="/api/auth/registration", response_model=RegistrationResponse)
+@auth.post(path="/registration", response_model=RegistrationResponse)
 async def registration(request: RegistrationRequest, use_case: IAuthUseCase = Depends(get_auth_depend)):
     return await use_case.registration(request)
 
 
-@auth.post(path="/api/auth/login", response_model=LoginResponse)
+@auth.post(path="/login", response_model=LoginResponse)
 async def login(request: LoginRequest, use_case: IAuthUseCase = Depends(get_auth_depend)):
     return await use_case.login(request)
 
 
-@auth.post(path="/api/token/refresh", response_model=RefreshResponse)
+@auth.post(path="/refresh", response_model=RefreshResponse)
 async def login(request: RefreshRequest, use_case: IAuthUseCase = Depends(get_auth_depend)):
     return await use_case.refresh(request)
