@@ -20,5 +20,5 @@ async def login(request: LoginRequest, use_case: IAuthUseCase = Depends(get_auth
 
 
 @auth.post(path="/refresh_token", response_model=RefreshResponse)
-async def login(request: RefreshRequest, use_case: IAuthUseCase = Depends(get_auth_depend)):
+async def refresh_token(request: RefreshRequest, use_case: IAuthUseCase = Depends(get_auth_depend)):
     return await use_case.refresh(request)
