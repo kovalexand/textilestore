@@ -51,8 +51,8 @@ class ITokenService(ABC):
 class TokenService(ITokenService):
     def __init__(self):
         settings = get_token_settings()
-        self.access_secret_key = ''.join(random.choice(string.ascii_letters) for _ in range(5))
-        self.refresh_secret_key = ''.join(random.choice(string.ascii_letters) for _ in range(5))
+        self.access_secret_key = settings.access_secret_key
+        self.refresh_secret_key = settings.refresh_secret_key
         self.access_token_expire_minutes = settings.access_token_expire_minutes
         self.refresh_token_expire_minutes = settings.refresh_token_expire_minutes
         self.algorythm = 'HS256'

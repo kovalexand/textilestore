@@ -15,6 +15,8 @@ class DBSettings(BaseSettings):
 
 
 class TokenSettings(BaseSettings):
+    access_secret_key: str
+    refresh_secret_key: str
     access_token_expire_minutes: int
     refresh_token_expire_minutes: int
 
