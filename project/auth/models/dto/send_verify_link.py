@@ -1,0 +1,14 @@
+from dataclasses import dataclass
+
+from pydantic import BaseModel
+
+from project.auth.models.token import Token
+
+
+class SendVerifyLinkRequest(BaseModel):
+    tokens: Token
+
+
+@dataclass
+class SendVerifyLinkResponse:
+    detail: str
