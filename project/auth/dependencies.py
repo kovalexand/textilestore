@@ -18,7 +18,7 @@ def get_token_service() -> ITokenService:
 
 @cache
 def get_auth_depend() -> IAuthUseCase:
-    user_repo = get_user_repository()
-    token_serv = get_token_service()
-    use_case = AuthUseCase(repo=user_repo, token=token_serv)
+    user = get_user_repository()
+    token = get_token_service()
+    use_case = AuthUseCase(user=user, token=token)
     return use_case
