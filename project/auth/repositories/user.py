@@ -14,7 +14,18 @@ class IUserRepository(ABC):
         """
 
     @abstractmethod
-    async def get_user(self, email: str) -> User | None:
+    async def password_change(self, user: User, password: str) -> User:
+        pass
+
+    @abstractmethod
+    async def find_by_id(self, _id: str) -> User | None:
+        """
+        :param _id:
+        :return:
+        """
+
+    @abstractmethod
+    async def find_by_email(self, email: str) -> User | None:
         """
         :param email:
         :return:
@@ -35,7 +46,19 @@ class UserRepository(IUserRepository):
                 raise EmailAlreadyExistException(body=exc_body)
         return user
 
-    async def get_user(self, email: str) -> User | None:
+    async def password_change(self, user: User, password: str) -> User:
+        user.password = password
+        with self.db() as session:
+            session.add(user)
+            session.commit()
+        return user
+
+    async def find_by_id(self, _id: str) -> User | None:
+        with self.db() as session:
+            user = session.query(User).filter_by(id=_id).first()
+        return user
+
+    async def find_by_email(self, email: str) -> User | None:
         with self.db() as session:
             user = session.query(User).filter_by(email=email).first()
         return user
