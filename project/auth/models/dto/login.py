@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from pydantic import BaseModel, Field, EmailStr
 
-from project.auth.models.dto.token import Token
+from project.auth.models.token import Token
 
 
 class LoginRequest(BaseModel):
@@ -13,4 +13,4 @@ class LoginRequest(BaseModel):
 @dataclass
 class LoginResponse:
     name: str
-    token: Token
+    tokens: Token
