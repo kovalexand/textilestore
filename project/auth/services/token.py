@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 
 from project.auth.models.token import Token
-from project.core.config import get_token_settings, get_email_settings
+from project.core.config import get_token_settings
 from project.auth.exceptions import TokenNotValidatedException
 
 
@@ -13,6 +13,8 @@ class ITokenService(ABC):
     async def create(self, qualifier: str) -> Token:
         """
         :param qualifier:
+        
+
         :return:
         """
 
@@ -62,34 +64,6 @@ class TokenService(ITokenService):
         except JWTError or ExpiredSignatureError or JWTClaimsError or KeyError:
             body = {'detail': 'Refresh-Token not validated'}
             raise TokenNotValidatedException(body=body)
-        return token
-
-    async def authentication(self, token: Token) -> str:
-        try:
-            payload = jwt.decode(token.access, self.access_secret_key, self.algorythm)
-            _id = payload['id']
-        except JWTError or ExpiredSignatureError or JWTClaimsError or KeyError:
-            body = {'detail': 'Access-Token not validated'}
-            raise TokenNotValidatedException(body=body)
-        return _id
-
-
-class EmailTokenService(ITokenService):
-    def __init__(self):
-        settings = get_email_settings()
-        self.access_secret_key = settings.access_secret_key
-        self.access_token_expire_minutes = settings.access_token_expire_minutes
-        self.algorythm = 'HS256'
-
-    async def create(self, qualifier: str) -> Token:
-        access_expire = datetime.utcnow() + timedelta(minutes=self.access_token_expire_minutes)
-        access_payload = {'id': qualifier, 'exp': access_expire}
-        access = jwt.encode(
-            access_payload, self.access_secret_key, algorithm=self.algorythm
-        )
-        return Token(access=access)
-
-    async def refresh(self, token: Token) -> Token:
         return token
 
     async def authentication(self, token: Token) -> str:

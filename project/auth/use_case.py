@@ -6,7 +6,6 @@ from project.auth.exceptions import UserDoesNotExistException
 from project.auth.models.dto.login import LoginRequest, LoginResponse
 from project.auth.models.dto.password_change import PasswordChangeRequest, PasswordChangeResponse
 from project.auth.models.dto.refresh import RefreshRequest, RefreshResponse
-from project.auth.models.dto.send_verify_link import SendVerifyLinkRequest, SendVerifyLinkResponse
 from project.auth.models.dto.user_info import UserInfoRequest, UserInfoResponse
 from project.auth.models.entities import User
 from project.auth.models.dto.registration import RegistrationRequest, RegistrationResponse
@@ -45,13 +44,6 @@ class IAuthUseCase(ABC):
 
     @abstractmethod
     async def get_user_info(self, request: UserInfoRequest) -> UserInfoResponse:
-        """
-        :param request:
-        :return:
-        """
-
-    @abstractmethod
-    async def send_verify_link(self, request: SendVerifyLinkRequest) -> SendVerifyLinkResponse:
         """
         :param request:
         :return:
@@ -104,6 +96,3 @@ class AuthUseCase(IAuthUseCase):
         email = str(user.email)
         is_verified = bool(user.is_verified)
         return UserInfoResponse(name=name, email=email, is_verified=is_verified)
-
-    async def send_verify_link(self, request: SendVerifyLinkRequest) -> SendVerifyLinkResponse:
-        return SendVerifyLinkResponse(detail="check your email")

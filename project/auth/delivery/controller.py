@@ -1,9 +1,8 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Header
 
 from project.auth.models.dto.login import LoginRequest, LoginResponse
 from project.auth.models.dto.password_change import PasswordChangeResponse, PasswordChangeRequest
 from project.auth.models.dto.refresh import RefreshResponse, RefreshRequest
-from project.auth.models.dto.send_verify_link import SendVerifyLinkResponse, SendVerifyLinkRequest
 from project.auth.models.dto.user_info import UserInfoResponse, UserInfoRequest
 from project.auth.use_case import IAuthUseCase
 from project.auth.dependencies import get_auth_depend
@@ -35,8 +34,3 @@ async def password_change(request: PasswordChangeRequest, use_case: IAuthUseCase
 @auth.post(path="/user_info", response_model=UserInfoResponse)
 async def get_user_info(request: UserInfoRequest, use_case=Depends(get_auth_depend)):
     return await use_case.get_user_info(request)
-
-
-@auth.post(path="/send_verify_link", response_model=SendVerifyLinkResponse)
-async def send_verify_link(request: SendVerifyLinkRequest, use_case=Depends(get_auth_depend)):
-    return await use_case.send_verify_link(request)

@@ -25,23 +25,9 @@ class TokenSettings(BaseSettings):
         env_file = ".env"
 
 
-class EmailSettings(BaseSettings):
-    access_secret_key: str
-    access_token_expire_minutes: int
-
-    class Config:
-        env_prefix = "EM_"
-        env_file = ".env"
-
-
 @cache
 def get_token_settings() -> TokenSettings:
     return TokenSettings()
-
-
-@cache
-def get_email_settings() -> EmailSettings:
-    return EmailSettings()
 
 
 @cache
